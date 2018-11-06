@@ -64,6 +64,9 @@
                 getCompletions: function(editor, session, pos, prefix, callback) {
                     var wordList = emojis; // from `atwho/emojis.min.js`
                     var obj = editor.getSession().getTokenAt(pos.row, pos.column.count);
+		    if (obj === null) {
+			    return
+		    }
                     var curTokens = obj.value.split(/\s+/);
                     var lastToken = curTokens[curTokens.length-1];
 
@@ -81,8 +84,12 @@
             var mentionWordCompleter = {
                 getCompletions: function(editor, session, pos, prefix, callback) {
                     var obj = editor.getSession().getTokenAt(pos.row, pos.column.count);
+		    if (obj === null) {
+		        return
+		    }
                     var curTokens = obj.value.split(/\s+/);
                     var lastToken = curTokens[curTokens.length-1];
+		    
 
                     if (lastToken[0] == '@' && lastToken[1] == '[') {
                         username = lastToken.replace(/([\@\[/\]/])/g, '');
